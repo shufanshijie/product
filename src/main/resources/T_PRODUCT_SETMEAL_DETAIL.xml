@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Haiyan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../haiyan.xsd">
+	<table name="T_PRODUCT_SETMEAL_DETAIL" description="套餐明细">
+		<id name="ID" javaType="string" uiname="ID">
+			<component type="hidden" url="#"/>
+			<queryCondition type="equal"/>
+		</id>
+		<field name="MEIALID" uiname="MEIALID" description="套餐ID" javaType="string" >
+			<component type="text"/>
+			<queryCondition type="equal"/>
+		</field>
+		<field name="NAME" uiname="NAME" description="产品名" javaType="string" >
+			<component type="text"/>
+			<queryCondition type="equal"/>
+		</field>
+		<field name="PRICE" uiname="PRICE" description="价格" javaType="bigDecimal" >
+			<component type="bigDecimal"/>
+			<queryCondition type="equal"/>
+		</field>
+		<field name="PICTURE" uiname="PICTURE" description="产品图片" javaType="string" nullAllowed="false" length="256" defaultValue="http://images.5proapp.com/noportrait">
+			<component type="text"/>
+			<queryCondition type="equal"/>
+		</field>
+		<field name="WEIGHT" uiname="WEIGHT" description="重量" javaType="integer" length="32" >
+			<queryCondition type="equal"/>
+		</field>
+		<field name="INTRODUCTION" uiname="INTRODUCTION" description="产品介绍" javaType="string" nullAllowed="true" safeHtml="true" length="1024">
+			<component type="text"/>
+		</field>
+	</table>
+</Haiyan>
