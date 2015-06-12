@@ -8,6 +8,7 @@ import haiyan.orm.database.DBPage;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 
 import com.shufan.product.common.ContextListener;
@@ -49,6 +50,9 @@ public class TestProductDao {
 		headRecord.set("PRICE", 10);
 		headRecord.set("ID", "aaaaif");
 		headRecord.set("INTRODUCTION", "好吃不贵2");
+		Date date = new Date();
+		headRecord.set("DATE", date);
+		headRecord.set("WEEK", "周一");
 		IDBResultSet detailSet = new DBPage(new ArrayList<IDBRecord>());
 		IDBRecord detailRecord = detailSet.appendRow();
 		detailRecord.set("NAME", "产品1");
