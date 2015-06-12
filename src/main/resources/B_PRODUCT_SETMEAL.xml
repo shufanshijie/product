@@ -17,6 +17,12 @@
 		<billField name="SETMEALINTRODUCTION" dbName="INTRODUCTION"  description="套餐介绍" tableIndex="1" >
 			<listColumn noquery="true"/>
 		</billField>
+		<billField name="SETMEALDATE" dbName="DATE"  description="套餐日期" tableIndex="1" >
+			<listColumn noquery="true"/>
+		</billField>
+		<billField name="SETMEALWEEK" dbName="WEEK"  description="套餐日" tableIndex="1" >
+			<listColumn noquery="true"/>
+		</billField>
 		
 		<billField name="RPODUCTNAME" dbName="NAME"  description="产品名" tableIndex="2" >
 			<listColumn noquery="true"/>

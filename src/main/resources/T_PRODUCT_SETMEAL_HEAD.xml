@@ -20,5 +20,25 @@
 		<field name="INTRODUCTION" uiname="INTRODUCTION" description="套餐介绍" javaType="string" nullAllowed="true" safeHtml="true" length="1024">
 			<component type="text"/>
 		</field>
+		<field name="DATE" uiname="DATE" description="套餐时间" javaType="date" nullAllowed="true" dataStyle="yyyy-MM-dd">
+			<component type="date" colspan="3" readOnly="true"/>
+			<queryCondition type="region"/>
+		</field>
+		<field name="WEEK" uiname="WEEK" description="周" javaType="string" nullAllowed="false" defaultValue="周一">
+			<option displayName="周一" value="周一"/>
+			<option displayName="周二" value="周二"/>
+			<option displayName="周三" value="周三"/>
+			<option displayName="周四" value="周四"/>
+			<option displayName="周五" value="周五"/>
+			<option displayName="周六" value="周六"/>
+			<option displayName="周日" value="周日"/>
+			<component type="dropdown" />
+			<queryCondition type="equal"/>
+		</field>
+		<queryFilter>
+			<pluggedFilter><![CDATA[
+				order by t_1.DATE 
+			]]></pluggedFilter>
+		</queryFilter>
 	</table>
 </Haiyan>
