@@ -1,19 +1,22 @@
 package com.shufan.product.dao.impl;
 
-import haiyan.bill.database.sql.DBBillManagerFactory;
+import haiyan.bill.database.BillDBContextFactory;
+import haiyan.bill.database.IBillDBManager;
+import haiyan.bill.database.sql.IBillDBContext;
 import haiyan.common.CloseUtil;
 import haiyan.common.exception.Warning;
 import haiyan.common.intf.config.IBillConfig;
 import haiyan.common.intf.database.IDBBill;
-import haiyan.common.intf.database.bill.IDBBillManager;
 import haiyan.common.intf.database.orm.IDBRecord;
 import haiyan.common.intf.database.orm.IDBResultSet;
 import haiyan.common.intf.session.IContext;
 import haiyan.config.castorgen.Table;
-import haiyan.config.intf.database.ITableDBManager;
-import haiyan.config.intf.session.ITableDBContext;
 import haiyan.config.util.ConfigUtil;
-import haiyan.orm.database.DBContextFactory;
+import haiyan.orm.database.TableDBContextFactory;
+import haiyan.orm.intf.database.ITableDBManager;
+import haiyan.orm.intf.session.ITableDBContext;
+
+import java.util.Collection;
 
 import com.shufan.product.dao.ProductDao;
 
@@ -79,7 +82,7 @@ public class ProductDaoImpl implements ProductDao {
 		ITableDBContext context = null;
 		ITableDBManager dbm = null;
 		try {
-			context = DBContextFactory.createDBContext(parentContext);
+			context = TableDBContextFactory.createDBContext(parentContext);
 			dbm = context.getDBM();
 			IDBRecord record = dbm.createRecord();
 			IDBResultSet result = dbm.select(context, getSetMealHeadTable(), record,maxPageSize,page);
@@ -97,7 +100,7 @@ public class ProductDaoImpl implements ProductDao {
 		ITableDBContext context = null;
 		ITableDBManager dbm = null;
 		try {
-			context = DBContextFactory.createDBContext(parentContext);
+			context = TableDBContextFactory.createDBContext(parentContext);
 			dbm = context.getDBM();
 			IDBRecord record = dbm.createRecord();
 			IDBResultSet result = dbm.select(context, getProductTable(), record,maxPageSize,page);
@@ -115,7 +118,7 @@ public class ProductDaoImpl implements ProductDao {
 		ITableDBContext context = null;
 		ITableDBManager dbm = null;
 		try {
-			context = DBContextFactory.createDBContext(parentContext);
+			context = TableDBContextFactory.createDBContext(parentContext);
 			dbm = context.getDBM();
 			IDBRecord record = dbm.createRecord();
 			record.set("TYPE", type);
@@ -134,7 +137,7 @@ public class ProductDaoImpl implements ProductDao {
 		ITableDBContext context = null;
 		ITableDBManager dbm = null;
 		try {
-			context = DBContextFactory.createDBContext(parentContext);
+			context = TableDBContextFactory.createDBContext(parentContext);
 			dbm = context.getDBM();
 			IDBRecord record = dbm.createRecord();
 			record.set("MEIALID", setMealId);
@@ -153,7 +156,7 @@ public class ProductDaoImpl implements ProductDao {
 		ITableDBContext context = null;
 		ITableDBManager dbm = null;
 		try {
-			context = DBContextFactory.createDBContext(parentContext);
+			context = TableDBContextFactory.createDBContext(parentContext);
 			dbm = context.getDBM();
 			IDBRecord result = dbm.select(context, getProductTable(), productId);
 			return result;
@@ -170,7 +173,7 @@ public class ProductDaoImpl implements ProductDao {
 		ITableDBContext context = null;
 		ITableDBManager dbm = null;
 		try {
-			context = DBContextFactory.createDBContext(parentContext);
+			context = TableDBContextFactory.createDBContext(parentContext);
 			dbm = context.getDBM();
 			IDBRecord record = dbm.createRecord();
 			record.set("MEIALID", setMealId);
@@ -189,7 +192,7 @@ public class ProductDaoImpl implements ProductDao {
 		ITableDBContext context = null;
 		ITableDBManager dbm = null;
 		try {
-			context = DBContextFactory.createDBContext(parentContext);
+			context = TableDBContextFactory.createDBContext(parentContext);
 			dbm = context.getDBM();
 			IDBRecord result = dbm.insert(context, getSetMealEvaluateTable(), record);
 			return result;
@@ -206,7 +209,7 @@ public class ProductDaoImpl implements ProductDao {
 		ITableDBContext context = null;
 		ITableDBManager dbm = null;
 		try {
-			context = DBContextFactory.createDBContext(parentContext);
+			context = TableDBContextFactory.createDBContext(parentContext);
 			dbm = context.getDBM();
 			IDBRecord result = dbm.update(context, getSetMealEvaluateTable(), record);
 			return result;
@@ -222,7 +225,7 @@ public class ProductDaoImpl implements ProductDao {
 		ITableDBContext context = null;
 		ITableDBManager dbm = null;
 		try {
-			context = DBContextFactory.createDBContext(parentContext);
+			context = TableDBContextFactory.createDBContext(parentContext);
 			dbm = context.getDBM();
 			dbm.openTransaction();
 			boolean result = dbm.delete(context, getSetMealEvaluateTable(), ids);
@@ -240,7 +243,7 @@ public class ProductDaoImpl implements ProductDao {
 		ITableDBContext context = null;
 		ITableDBManager dbm = null;
 		try {
-			context = DBContextFactory.createDBContext(parentContext);
+			context = TableDBContextFactory.createDBContext(parentContext);
 			dbm = context.getDBM();
 			IDBRecord result = dbm.insert(context, getProductTable(), record);
 			return result;
@@ -256,7 +259,7 @@ public class ProductDaoImpl implements ProductDao {
 		ITableDBContext context = null;
 		ITableDBManager dbm = null;
 		try {
-			context = DBContextFactory.createDBContext(parentContext);
+			context = TableDBContextFactory.createDBContext(parentContext);
 			dbm = context.getDBM();
 			IDBRecord result = dbm.update(context, getProductTable(), record);
 			return result;
@@ -272,7 +275,7 @@ public class ProductDaoImpl implements ProductDao {
 		ITableDBContext context = null;
 		ITableDBManager dbm = null;
 		try {
-			context = DBContextFactory.createDBContext(parentContext);
+			context = TableDBContextFactory.createDBContext(parentContext);
 			dbm = context.getDBM();
 			dbm.openTransaction();
 			boolean result = dbm.delete(context, getProductTable(), ids);
@@ -285,17 +288,50 @@ public class ProductDaoImpl implements ProductDao {
 			CloseUtil.close(context);
 		}
 	}
+//	@Override
+//	public IBill createSetMeal(boolean createBillID) {
+//		IBill bill = new DBBill(parentContext.getUser(), getSetMealBill());
+//		if (createBillID)
+//			this.createBillID(bill);
+//		if (!billList.contains(bill))
+//			billList.add(bill);
+//		return bill;
+//	}
 	@Override
-	public IDBBill addSetMeal(IDBResultSet head, IDBResultSet detail) {
-		IContext context = null;
-		IDBBillManager bbm = null;
+	public IDBBill addSetMeal(IDBBill bill) throws Throwable {
+		IBillDBContext context = null;
+		IBillDBManager bbm = null;
 		try {
-			context = DBContextFactory.createDBContext(parentContext);
-			bbm = DBBillManagerFactory.createDBBillManager(context);
-			IDBBill bill = bbm.createBill(getSetMealBill(), true);
-			bill.setResultSet(0, head);
-			bill.setResultSet(1, detail);
-			bbm.saveBill(bill);
+			context = BillDBContextFactory.createBillDBContext(parentContext,getSetMealBill());
+			bbm = context.getBBM();
+			IDBResultSet[] rs = bill.getResultSets();
+			for(IDBResultSet set : rs){
+				Collection<IDBRecord> records = set.getRecords();
+				for(IDBRecord record : records){
+					record.setStatus(IDBRecord.INSERT);
+				}
+			}
+			context.openTransaction();
+			bbm.saveBill(context, bill);
+			context.commit();
+			return bill;
+		} catch (Throwable e) {
+			if(context != null)
+				context.rollback();
+			throw Warning.wrapException(e);
+		}finally{
+			CloseUtil.close(bbm);
+			CloseUtil.close(context);
+		}
+	}
+	@Override
+	public IDBBill loadSetMeal(IDBBill bill) {
+		IBillDBContext context = null;
+		IBillDBManager bbm = null;
+		try {
+			context = BillDBContextFactory.createBillDBContext(parentContext,getSetMealBill());
+			bbm = context.getBBM();
+			bbm.loadBill(context, bill);
 			return bill;
 		} catch (Throwable e) {
 			throw Warning.wrapException(e);
@@ -304,22 +340,54 @@ public class ProductDaoImpl implements ProductDao {
 			CloseUtil.close(context);
 		}
 	}
-	//TODO 删除无效
 	@Override
-	public IDBBill deleteSetMeal(IDBResultSet head, IDBResultSet detail) {
-		IContext context = null;
-		IDBBillManager bbm = null;
+	public IDBBill updateSetMeal(IDBBill bill) throws Throwable {
+		IBillDBContext context = null;
+		IBillDBManager bbm = null;
 		try {
-			context = DBContextFactory.createDBContext(parentContext);
-			bbm = DBBillManagerFactory.createDBBillManager(context);
+			context = BillDBContextFactory.createBillDBContext(parentContext,getSetMealBill());
+			bbm = context.getBBM();
+			IDBResultSet[] rs = bill.getResultSets();
+			for(IDBResultSet set : rs){
+				Collection<IDBRecord> records = set.getRecords();
+				for(IDBRecord record : records){
+					record.setStatus(IDBRecord.UPDATE);
+				}
+			}
+			context.openTransaction();
+			bbm.saveBill(context, bill);
+			context.commit();
+			return bill;
+		} catch (Throwable e) {
+			if(context != null)
+				context.rollback();
+			throw Warning.wrapException(e);
+		}finally{
+			CloseUtil.close(bbm);
+			CloseUtil.close(context);
+		}
+	}
+	@Override
+	public IDBBill deleteSetMeal(IDBBill bill) throws Throwable {
+		IBillDBContext context = null;
+		IBillDBManager bbm = null;
+		try {
+			context = BillDBContextFactory.createBillDBContext(parentContext,getSetMealBill());
+			bbm = context.getBBM();
+			IDBResultSet[] rs = bill.getResultSets();
+			for(IDBResultSet set : rs){
+				Collection<IDBRecord> records = set.getRecords();
+				for(IDBRecord record : records){
+					record.setStatus(IDBRecord.DELETE);
+				}
+			}
 			bbm.openTransaction();
-			IDBBill bill = bbm.createBill(getSetMealBill(), true);
-			bill.setResultSet(0, head);
-			bill.setResultSet(1, detail);
-			bbm.deleteBill(bill);
+			bbm.deleteBill(context, bill);
 			bbm.commit();
 			return bill;
 		} catch (Throwable e) {
+			if(context != null)
+				context.rollback();
 			throw Warning.wrapException(e);
 		}finally{
 			CloseUtil.close(bbm);

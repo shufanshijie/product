@@ -1,5 +1,6 @@
 package com.shufan.usercenter.test;
 
+import haiyan.bill.database.DBBill;
 import haiyan.common.config.PathUtil;
 import haiyan.common.intf.database.IDBBill;
 import haiyan.common.intf.database.orm.IDBRecord;
@@ -38,38 +39,51 @@ public class TestProductDao {
 		ProductDao dao = new ProductDaoImpl(null);
 		IDBResultSet result = dao.getAllSetMeal(10, 1);
 		System.out.println(" size : "+ result.getRecordCount() + "  name: "+ result.getRecord(0).get("NAME"));
-		result = dao.getSetMealDetail("aaaaab", 10, 1);
+		result = dao.getSetMealDetail("aaaaab", 100, 1);
 		System.out.println(" size : "+ result.getRecordCount() + "  name: "+ result.getRecord(0).get("NAME"));
 	}
 
-	private static void testBill() {
+	private static void testBill() throws Throwable {
 		ProductDao dao = new ProductDaoImpl(null);
+
+//		IDBBill bill = dao.createSetMeal();
 		IDBResultSet headSet = new DBPage(new ArrayList<IDBRecord>());
 		IDBRecord headRecord = headSet.appendRow();
-		headRecord.set("NAME", "套餐2");
+		headRecord.set("NAME", "套餐5");
 		headRecord.set("PRICE", 10);
-		headRecord.set("ID", "aaaaif");
-		headRecord.set("INTRODUCTION", "好吃不贵2");
+		headRecord.set("INTRODUCTION", "好吃不贵5");
 		Date date = new Date();
 		headRecord.set("DATE", date);
 		headRecord.set("WEEK", "周一");
+		
 		IDBResultSet detailSet = new DBPage(new ArrayList<IDBRecord>());
 		IDBRecord detailRecord = detailSet.appendRow();
-		detailRecord.set("NAME", "产品1");
-		detailRecord.set("PRICE", 4);
-		detailRecord.set("WEIGHT", 200);
-		detailRecord.set("INTRODUCTION", "好吃1");
-		detailRecord = detailSet.appendRow();
-		detailRecord.set("NAME", "产品2");
-		detailRecord.set("PRICE", 3);
-		detailRecord.set("WEIGHT", 200);
-		detailRecord.set("INTRODUCTION", "好吃2");
-		detailRecord = detailSet.appendRow();
 		detailRecord.set("NAME", "产品3");
 		detailRecord.set("PRICE", 4);
 		detailRecord.set("WEIGHT", 200);
 		detailRecord.set("INTRODUCTION", "好吃3");
-		IDBBill bill = dao.addSetMeal(headSet, detailSet);
+		detailRecord = detailSet.appendRow();
+		detailRecord.set("NAME", "产品4");
+		detailRecord.set("PRICE", 3);
+		detailRecord.set("WEIGHT", 200);
+		detailRecord.set("INTRODUCTION", "好吃4");
+		detailRecord.setStatus(IDBRecord.DELETE);
+		detailRecord = detailSet.appendRow();
+		detailRecord.set("NAME", "产品5");
+		detailRecord.set("PRICE", 4);
+		detailRecord.set("WEIGHT", 200);
+		detailRecord.set("INTRODUCTION", "好吃5");
+		IDBBill bill = new DBBill(null, dao.getSetMealBill());
+		bill.setResultSet(0, headSet);
+		bill.setResultSet(1, detailSet);
+		bill.setBillID("aaaa4F");
+		bill = dao.loadSetMeal(bill);
+		
+//		headRecord.set("MEALID", "aaaa4F");
+//		IDBBill success = dao.deleteSetMeal(bill);
+//		System.out.println(success);
+//		detailRecord.set("INTRODUCTION", "修改的值");
+//		dao.saveSetMeal();
 		IDBResultSet[] sets = bill.getResultSets();
 		System.out.println("size: "+sets.length+" INTRODUCTION ：  "+sets[0].getRecord(0).get("INTRODUCTION"));
 		

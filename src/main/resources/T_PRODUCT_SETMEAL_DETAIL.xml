@@ -5,7 +5,7 @@
 			<component type="hidden" url="#"/>
 			<queryCondition type="equal"/>
 		</id>
-		<field name="MEIALID" uiname="MEIALID" description="套餐ID" javaType="string" >
+		<field name="MEALID" uiname="MEALID" description="套餐ID" javaType="string" >
 			<component type="text"/>
 			<queryCondition type="equal"/>
 		</field>

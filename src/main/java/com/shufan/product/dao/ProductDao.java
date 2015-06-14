@@ -1,5 +1,6 @@
 package com.shufan.product.dao;
 
+import haiyan.common.intf.config.IBillConfig;
 import haiyan.common.intf.database.IDBBill;
 import haiyan.common.intf.database.orm.IDBRecord;
 import haiyan.common.intf.database.orm.IDBResultSet;
@@ -26,9 +27,12 @@ public interface ProductDao {
 	public abstract IDBRecord addProduct(IDBRecord record);
 	public abstract IDBRecord updateProduct(IDBRecord record);
 	public abstract boolean deleteProduct(String[] ids);
-	
-	public abstract IDBBill addSetMeal(IDBResultSet head,IDBResultSet detail);
-	public abstract IDBBill deleteSetMeal(IDBResultSet head,IDBResultSet detail);
+
+	public abstract IDBBill loadSetMeal(IDBBill bill);
+	public abstract IDBBill addSetMeal(IDBBill bill) throws Throwable;
+	public abstract IDBBill updateSetMeal(IDBBill bill)throws Throwable;
+	public abstract IDBBill deleteSetMeal(IDBBill bill)throws Throwable;
 	
 	public abstract Table getSetMealEvaluateTable();
+	public abstract IBillConfig getSetMealBill();
 }
