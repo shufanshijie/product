@@ -288,15 +288,6 @@ public class ProductDaoImpl implements ProductDao {
 			CloseUtil.close(context);
 		}
 	}
-//	@Override
-//	public IBill createSetMeal(boolean createBillID) {
-//		IBill bill = new DBBill(parentContext.getUser(), getSetMealBill());
-//		if (createBillID)
-//			this.createBillID(bill);
-//		if (!billList.contains(bill))
-//			billList.add(bill);
-//		return bill;
-//	}
 	@Override
 	public IDBBill addSetMeal(IDBBill bill) throws Throwable {
 		IBillDBContext context = null;
