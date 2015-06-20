@@ -13,6 +13,10 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,22 +45,33 @@ public class ProductController {
 		BufferedReader br = null;
 		PrintWriter writer = null;
 		try {
-			Object obj = CacheUtil.getData("product", "meal_home");
-			if(obj != null){
-				res.getWriter().write(obj.toString());
-				return;
-			}
+//			Object obj = CacheUtil.getData("product", "meal_home");
+//			if(obj != null){
+//				res.getWriter().write(obj.toString());
+//				return;
+//			}
 			context = new WebContext(req, res);
 			int size = 20;
 			String pageSize = req.getParameter("pageSize");
 			if(pageSize != null)
 				size = Integer.parseInt(pageSize);
-			Template pdTemplate = Velocity.getTemplate("mealHomeList.vm", "utf-8");
+			Template pdTemplate = Velocity.getTemplate("mealHomeList2.vm", "utf-8");
 			VelocityContext ctx = new VelocityContext();
 			ProductDao dao = new ProductDaoImpl(context);
 			IDBResultSet result = dao.getAllSetMeal(size, 1);
 			if(result.getRecordCount()>0){
-				ctx.put("list", result.getRecords());
+				//TODO 此处需要数据库表中新加字段区分套餐一二
+				Collection<IDBRecord> collection = result.getRecords();
+				Iterator<IDBRecord> it = collection.iterator();
+				while(it.hasNext()){
+					//格式化一下日期
+					IDBRecord record = (IDBRecord) it.next();
+					String date = (String)record.get("DATE");
+					String dateFormat = date.substring(date.indexOf("-")+1);
+					record.set("DATEFORMAT", dateFormat);
+				}
+				ctx.put("firstList", result.getRecords());
+				ctx.put("secondList", result.getRecords());
 			}
 			StringWriter sw = new StringWriter();
 			BufferedWriter bw = new BufferedWriter(sw);
@@ -65,7 +80,7 @@ public class ProductController {
 			bw.flush();
 			String backData = sw.toString().replaceAll("\\n", "").replaceAll("\\t", "").replaceAll("\\r", "");
 			writer.write(backData);
-			CacheUtil.setData("product", "meal_home", backData);
+//			CacheUtil.setData("product", "meal_home", backData);
 			
 		}  catch (Exception e) {
 			throw new Warning(500, e);

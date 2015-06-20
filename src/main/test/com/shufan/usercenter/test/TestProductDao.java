@@ -29,8 +29,8 @@ public class TestProductDao {
 		ContextListener.init(s+File.separator+"WebContent"+File.separator+"WEB-INF");
 		ContextListener.USE_ES=true; 
 		
-//		testBill();
-		testSetMeal();
+		testBill();
+//		testSetMeal();
 		
 		System.exit(0);
 	}
@@ -76,8 +76,11 @@ public class TestProductDao {
 		IDBBill bill = new DBBill(null, dao.getSetMealBill());
 		bill.setResultSet(0, headSet);
 		bill.setResultSet(1, detailSet);
-		bill.setBillID("aaaa4F");
-		bill = dao.loadSetMeal(bill);
+//		bill.setBillID("aaaa4F");
+		dao.addSetMeal(bill);
+		bill.setBillID(null);
+		dao.addSetMeal(bill);
+//		bill = dao.loadSetMeal(bill);
 		
 //		headRecord.set("MEALID", "aaaa4F");
 //		IDBBill success = dao.deleteSetMeal(bill);
