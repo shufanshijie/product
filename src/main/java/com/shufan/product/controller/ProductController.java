@@ -13,9 +13,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +53,7 @@ public class ProductController {
 			String pageSize = req.getParameter("pageSize");
 			if(pageSize != null)
 				size = Integer.parseInt(pageSize);
-			Template pdTemplate = Velocity.getTemplate("mealHomeList2.vm", "utf-8");
+			Template pdTemplate = Velocity.getTemplate("allMealList.vm", "utf-8");
 			VelocityContext ctx = new VelocityContext();
 			ProductDao dao = new ProductDaoImpl(context);
 			IDBResultSet result = dao.getAllSetMeal(size, 1);
