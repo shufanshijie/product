@@ -13,6 +13,10 @@
 			<component type="bigDecimal"/>
 			<queryCondition type="equal"/>
 		</field>
+		<field name="PREFPRICE" uiname="PREFPRICE" description="活动价格" javaType="bigDecimal" >
+			<component type="bigDecimal"/>
+			<queryCondition type="equal"/>
+		</field>
 		<field name="PICTURE" uiname="PICTURE" description="套餐图片" javaType="string" nullAllowed="false" length="256" defaultValue="http://images.5proapp.com/noportrait">
 			<component type="text"/>
 			<queryCondition type="equal"/>
@@ -20,7 +24,7 @@
 		<field name="INTRODUCTION" uiname="INTRODUCTION" description="套餐介绍" javaType="string" nullAllowed="true" safeHtml="true" length="1024">
 			<component type="text"/>
 		</field>
-		<field name="DATE" uiname="DATE" description="套餐时间" javaType="date" nullAllowed="true" dataStyle="yyyy-MM-dd">
+		<field name="DATE" uiname="DATE" description="送餐时间" javaType="date" nullAllowed="true" dataStyle="yyyy-MM-dd">
 			<component type="date" colspan="3" readOnly="true"/>
 			<queryCondition type="region"/>
 		</field>

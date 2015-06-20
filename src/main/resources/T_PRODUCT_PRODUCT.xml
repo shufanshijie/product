@@ -20,6 +20,10 @@
 			<component type="bigDecimal"/>
 			<queryCondition type="equal"/>
 		</field>
+		<field name="PREFPRICE" uiname="PREFPRICE" description="活动价格" javaType="bigDecimal" >
+			<component type="bigDecimal"/>
+			<queryCondition type="equal"/>
+		</field>
 		<field name="PICTURE" uiname="PICTURE" description="产品图片" javaType="string" nullAllowed="false" length="256" defaultValue="http://images.5proapp.com/noportrait">
 			<component type="text"/>
 			<queryCondition type="equal"/>
