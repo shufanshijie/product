@@ -17,7 +17,8 @@ $(document).click(function(event){
 		window.history.go(-1);
 	}
 });
-function clearHeader(){
-	$(document).find('.eleme-header').find('.header-title').remove();
-	$(document).find('.eleme-header').find('.header-helper').remove();
+
+function getGotoPayOffUrl(mealId,page){
+	var GotoPayOff="mealDetail/"+mealId+"/"+page;
+	return GotoPayOff;
 }
