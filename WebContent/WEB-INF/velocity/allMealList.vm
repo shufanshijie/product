@@ -182,9 +182,26 @@
 	
 		<footer class="eleme-footer-virtual">
 		<form class="submitPageOff" action="http://localhost:8080/orderform/orderForm_complete" method="post" style="display: none;">
-			<input class="addr" type="hidden" name="addr" value="">
-			<input class="content"  type="hidden" name="content" value="">
+			<input class="mealdetail"  type="hidden" name="mealdetail" value="">
+			
+			<input class="id"  type="hidden" name="id" value="">
+			<input class="image"  type="hidden" name="image" value="">
+			<input class="name"  type="hidden" name="name" value="">
+			<input class="status"  type="hidden" name="status" value="">
+			<input class="dispatchingaddress"  type="hidden" name="dispatchingaddress" value="">
+			<input class="dispatchingdate"  type="hidden" name="dispatchingdate" value="">
+			<input class="dispatchingtype"  type="hidden" name="dispatchingtype" value="">						
+			<input class="productids"  type="hidden" name="productids"  value="">
+			<input class="totalprice"  type="hidden" name="totalprice"  value="">
+			<input class="consumepoints"  type="hidden" name="consumepoints"  value="">
+			<input class="pointstype"  type="hidden" name="pointstype"  value="">
 			<input class="userid"  type="hidden" name="userid"  value="">
+			<input class="payno"  type="hidden" name="payno"  value="">
+			<input class="createdate"  type="hidden" name="createdate"  value="">
+			<input class="paydate"  type="hidden" name="paydate"  value="">
+			<input class="dealdate"  type="hidden" name="dealdate"  value="">
+			<input class="wfbillid"  type="hidden" name="wfbillid"  value="">
+			<input class="hyversion"  type="hidden" name="hyversion"  value="">
 		</form>
 			<a href="javascript:void(0);" class="btn btn-info btn-footer" allprice="0">0元  去结算</a>
 		</footer>
@@ -233,7 +250,7 @@ $(document).click(function(event){
 		xiadan();
 	}
 });
-$(function() {
+/*$(function() {
 	$('.gsrt-box').scrollTop(100);
 	var combos = $("ul.gsrt-box").clone().find("li");
 	$('.gsrt-box')
@@ -247,7 +264,7 @@ $(function() {
 							return combos[Math.floor(Math.random() * 4)].outerHTML;
 						}
 					});
-});
+});*/
 
 function xiadan(){
 	$.getJSON("http://localhost:8080/usercenter/addr/wx/123",{},function(data){
@@ -255,6 +272,7 @@ function xiadan(){
 			window.location.href="http://localhost:8080/usercenter/addr/edit";
 		}else{
 			var arr = [];
+			var productids=[];
 			var list = $("#combo_1 .combo");
 			for(var i =0;i<list.length;i++){
 				var $meal = $(list[i]);
@@ -265,13 +283,15 @@ function xiadan(){
 					var name= $meal.find("span.comboSet").html();
 					var week=$meal.find(".ggsrt-time h1").html();
 					var price=$meal.attr("price");
+					productids.push(meal);
 					arr[i] = {"ID":meal,"COUNT":num,"DISPATCHINGDATE":date,"week":week,"name":name,"price":price}
 				}
 			}
 			var json = {"addr":data.addr,"content":JSON.stringify(arr)};
 			$('.submitPageOff').find('input.addr').val(data.addr);
-			$('.submitPageOff').find('input.content').val(JSON.stringify(arr));
+			$('.submitPageOff').find('input.mealdetail').val(JSON.stringify(arr));
 			$('.submitPageOff').find('input.userid').val(data.userWXID);
+			$('.submitPageOff').find('input.productids').val(productids.join(','));
 			$('.submitPageOff').submit();
 			/*$.post("http://localhost:8080/orderform/orderForm_complete",json,function(data){
 				$(document).find('html').html(data.substring(6,data.length-7));
