@@ -13,7 +13,7 @@
 			<component type="bigDecimal"/>
 			<queryCondition type="equal"/>
 		</field>
-		<field name="PREFPRICE" uiname="PREFPRICE" description="活动价格" javaType="bigDecimal" >
+		<field name="OLDPRICE" uiname="OLDPRICE" description="原价格" javaType="bigDecimal" >
 			<component type="bigDecimal"/>
 			<queryCondition type="equal"/>
 		</field>

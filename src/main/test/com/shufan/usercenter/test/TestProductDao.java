@@ -54,7 +54,7 @@ public class TestProductDao {
 		headRecord.set("INTRODUCTION", "好吃不贵5");
 		Date date = new Date();
 		headRecord.set("DATE", date);
-		headRecord.set("WEEK", "周一");
+		headRecord.set("WEEK", "周日");
 		
 		IDBResultSet detailSet = new DBPage(new ArrayList<IDBRecord>());
 		IDBRecord detailRecord = detailSet.appendRow();

@@ -127,8 +127,8 @@ public class ContextListener implements ServletContextListener {
 							IDBResultSet headSet = new DBPage(new ArrayList<IDBRecord>());
 							IDBRecord headRecord = headSet.appendRow();
 							headRecord.set("NAME", name);
-							headRecord.set("PRICE", price);
-							headRecord.set("PREFPRICE", huodongPrice);
+							headRecord.set("OLDPRICE", price);
+							headRecord.set("PRICE", huodongPrice);
 							headRecord.set("DATE", date);
 							headRecord.set("WEEK", week);
 							IDBBill bill = new DBBill(null, dao.getSetMealBill());

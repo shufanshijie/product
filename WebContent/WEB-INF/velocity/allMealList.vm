@@ -139,7 +139,7 @@
 						<li  class="combo" price="$meal.PRICE" Id="$meal.ID" mealId="$meal.MEALID">
 							<div class="ggsrt-time">
 								<h1>$meal.WEEK</h1>
-								<span class="meal_date">$meal.DATE</span>
+								<span class="meal_date" date="$meal.DATE">$meal.DATEFORMAT</span>
 							</div>
 														
 							<span class="comboSet">$meal.NAME</span>
@@ -267,37 +267,25 @@ $(document).click(function(event){
 });*/
 
 function xiadan(){
-	$.getJSON("http://localhost:8080/usercenter/addr/wx/123",{},function(data){
-		if(data.addr){
-			window.location.href="http://localhost:8080/usercenter/addr/edit";
-		}else{
-			var arr = [];
-			var productids=[];
-			var list = $("#combo_1 .combo");
-			for(var i =0;i<list.length;i++){
-				var $meal = $(list[i]);
-				var num = $meal.find('.order_num').val();
-				if(num > 0){
-					var meal = $meal.attr("Id");
-					var date = $meal.find(".meal_date").html();
-					var name= $meal.find("span.comboSet").html();
-					var week=$meal.find(".ggsrt-time h1").html();
-					var price=$meal.attr("price");
-					productids.push(meal);
-					arr[i] = {"ID":meal,"COUNT":num,"DISPATCHINGDATE":date,"week":week,"name":name,"price":price}
-				}
-			}
-			var json = {"addr":data.addr,"content":JSON.stringify(arr)};
-			$('.submitPageOff').find('input.addr').val(data.addr);
-			$('.submitPageOff').find('input.mealdetail').val(JSON.stringify(arr));
-			$('.submitPageOff').find('input.userid').val(data.userWXID);
-			$('.submitPageOff').find('input.productids').val(productids.join(','));
-			$('.submitPageOff').submit();
-			/*$.post("http://localhost:8080/orderform/orderForm_complete",json,function(data){
-				$(document).find('html').html(data.substring(6,data.length-7));
-			});*/
+	var arr = [];
+	var productids=[];
+	var list = $("#combo_1 .combo");
+	for(var i =0;i<list.length;i++){
+		var $meal = $(list[i]);
+		var num = $meal.find('.order_num').val();
+		if(num > 0){
+			var meal = $meal.attr("Id");
+			var date = $meal.find(".meal_date").attr("date");
+			var name= $meal.find("span.comboSet").html();
+			var week=$meal.find(".ggsrt-time h1").html();
+			var price=$meal.attr("price");
+			productids.push(meal);
+			arr[i] = {"ID":meal,"COUNT":num,"DISPATCHINGDATE":date,"week":week,"name":name,"price":price};
 		}
-	});
+	}
+	$('.submitPageOff').find('input.mealdetail').val(JSON.stringify(arr));
+	$('.submitPageOff').find('input.userid').val("123");
+	$('.submitPageOff').submit();
 }
 </script>
 </body></html>
