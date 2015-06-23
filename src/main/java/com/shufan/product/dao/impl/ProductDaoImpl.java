@@ -7,15 +7,19 @@ import haiyan.common.CloseUtil;
 import haiyan.common.exception.Warning;
 import haiyan.common.intf.config.IBillConfig;
 import haiyan.common.intf.database.IDBBill;
+import haiyan.common.intf.database.IDBFilter;
 import haiyan.common.intf.database.orm.IDBRecord;
 import haiyan.common.intf.database.orm.IDBResultSet;
 import haiyan.common.intf.session.IContext;
 import haiyan.config.castorgen.Table;
 import haiyan.config.util.ConfigUtil;
 import haiyan.orm.database.TableDBContextFactory;
+import haiyan.orm.database.sql.SQLDBFilter;
 import haiyan.orm.intf.database.ITableDBManager;
 import haiyan.orm.intf.session.ITableDBContext;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.Collection;
 
 import com.shufan.product.dao.ProductDao;
@@ -84,8 +88,14 @@ public class ProductDaoImpl implements ProductDao {
 		try {
 			context = TableDBContextFactory.createDBContext(parentContext);
 			dbm = context.getDBM();
-			IDBRecord record = dbm.createRecord();
-			IDBResultSet result = dbm.select(context, getSetMealHeadTable(), record,maxPageSize,page);
+			Calendar cal = Calendar.getInstance();
+			cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH)+1);
+			cal.set(Calendar.HOUR, 0);
+			cal.set(Calendar.MINUTE, 0);
+			cal.set(Calendar.SECOND, 0);
+			Date date = new Date(cal.getTime().getTime());
+			IDBFilter filter = new SQLDBFilter(" and DATE >= ?", new Object[]{date});
+			IDBResultSet result = dbm.select(context, getSetMealHeadTable(), filter,maxPageSize,page);
 			return result;
 		} catch (Throwable e) {
 			throw Warning.wrapException(e);
