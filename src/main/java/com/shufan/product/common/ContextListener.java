@@ -77,7 +77,7 @@ public class ContextListener implements ServletContextListener {
 		try {
 			conn = factory.createConnection();
 			conn.start();
-			Session session = conn.createSession(true, Session.AUTO_ACKNOWLEDGE);
+			Session session = conn.createSession(false, Session.AUTO_ACKNOWLEDGE);
 			Destination destination = session.createQueue("shangjie");
 			MessageConsumer consumer = session.createConsumer(destination);
 			//TODO 这里需要面向接口编程
