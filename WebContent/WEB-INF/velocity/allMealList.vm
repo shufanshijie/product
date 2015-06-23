@@ -172,7 +172,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="pop tip_pop">
+	<div class="pop tip_pop_bak">
 		按周预定仅40元， <a class="week_order_link" href="#">一键点餐..</a>
 	</div>
 	<div class="pop tip_pop_bak">
@@ -242,7 +242,8 @@ $(document).click(function(event){
 		$('.btn-footer').html($('.btn-footer').attr('allprice')+"元 去结算");
 	}
 	if($(event.target).hasClass('week_order_link')){
-		$('.the_choice').hide();
+		/*$('.the_choice').hide();*/
+		$('.the_choice input').val(1);
 		$('.tip_pop').addClass('tip_pop_bak').removeClass('tip_pop');
 		$('.tip_pop_bak').addClass('tip_pop').removeClass('tip_pop_bak');
 	}
