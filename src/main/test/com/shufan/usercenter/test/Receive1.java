@@ -1,16 +1,12 @@
 package com.shufan.usercenter.test;
 
-import haiyan.bill.database.DBBill;
 import haiyan.common.config.PathUtil;
 import haiyan.common.exception.Warning;
-import haiyan.common.intf.database.IDBBill;
 import haiyan.common.intf.database.orm.IDBRecord;
-import haiyan.common.intf.database.orm.IDBResultSet;
-import haiyan.orm.database.DBPage;
+import haiyan.orm.database.DBRecord;
 
 import java.io.File;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.jms.Connection;
@@ -47,18 +43,17 @@ public class Receive1 {
 		ContextListener.USE_ES=true; 
 		
 		ConnectionFactory factory = new ActiveMQConnectionFactory(ActiveMQConnection.DEFAULT_USER,
-				ActiveMQConnection.DEFAULT_PASSWORD,"nio://test.5proapp.com:61616");
+				ActiveMQConnection.DEFAULT_PASSWORD,"nio://localhost:61616");
 		Connection conn = null;
 		try {
 			conn = factory.createConnection();
 			conn.start();
-			Session session = conn.createSession(true, Session.AUTO_ACKNOWLEDGE);
+			Session session = conn.createSession(false, Session.AUTO_ACKNOWLEDGE);
 			Destination destination = session.createQueue("shangjie");
 			MessageConsumer consumer = session.createConsumer(destination);
 			
 			consumer.setMessageListener(new MessageListener(){
 				public void onMessage(Message message) {
-//					TextMessage txt = (TextMessage) message;
 					if(message instanceof MapMessage){
 						MapMessage map = (MapMessage) message;
 						try {
@@ -86,20 +81,39 @@ public class Receive1 {
 			int size = arr.length();
 			for(int i=0;i<size;i++){
 				JSONObject json = arr.getJSONObject(i);
+				String id = json.getString("id");
 				double price = json.getDouble("price");
 				double huodongPrice = json.getDouble("prefprice");
 				String name = json.getString("mealname");
 				long time = json.getJSONObject("dispatchingdate").getLong("time");
-				IDBResultSet headSet = new DBPage(new ArrayList<IDBRecord>());
-				IDBRecord headRecord = headSet.appendRow();
-				headRecord.set("NAME", name);
-				headRecord.set("PRICE", price);
-				headRecord.set("PREFPRICE", huodongPrice);
-				headRecord.set("DATE", new Date(time));
-				IDBBill bill = new DBBill(null, dao.getSetMealBill());
-				bill.setResultSet(0, headSet);
+				String picture = json.getString("picture");
+				Date date = new Date(time);
+				int day = date.getDay();
+				String week = null;
+				if(day == 1){
+					week = "周一";
+				}else if(day == 2)
+					week = "周二";
+				else if(day == 3)
+					week = "周三";
+				else if(day == 4)
+					week = "周四";
+				else if(day == 5)
+					week = "周五";
+				else if(day == 6)
+					week = "周六";
+				else 
+					week = "周日";
+				IDBRecord record = new DBRecord();
+				record.set("NAME", name);
+				record.set("OLDPRICE", price);
+				record.set("PRICE", huodongPrice);
+				record.set("DATE", date);
+				record.set("WEEK", week);
+				record.set("PICTURE", picture);
+				record.set("ID", id);
 				try {
-					dao.addSetMeal(bill);
+					dao.addMeal(record);
 				} catch (Throwable e) {
 					throw new Warning(500,e);
 				}

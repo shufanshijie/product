@@ -1,8 +1,6 @@
 package com.shufan.usercenter.test;
 
-import haiyan.bill.database.DBBill;
 import haiyan.common.config.PathUtil;
-import haiyan.common.intf.database.IDBBill;
 import haiyan.common.intf.database.orm.IDBRecord;
 import haiyan.common.intf.database.orm.IDBResultSet;
 import haiyan.orm.database.DBPage;
@@ -37,9 +35,7 @@ public class TestProductDao {
 
 	private static void testSetMeal() {
 		ProductDao dao = new ProductDaoImpl(null);
-		IDBResultSet result = dao.getAllSetMeal(10, 1);
-		System.out.println(" size : "+ result.getRecordCount() + "  name: "+ result.getRecord(0).get("NAME"));
-		result = dao.getSetMealDetail("aaaaab", 100, 1);
+		IDBResultSet result = dao.getAllMeal(10, 1);
 		System.out.println(" size : "+ result.getRecordCount() + "  name: "+ result.getRecord(0).get("NAME"));
 	}
 
@@ -56,39 +52,6 @@ public class TestProductDao {
 		headRecord.set("DATE", date);
 		headRecord.set("WEEK", "周日");
 		
-		IDBResultSet detailSet = new DBPage(new ArrayList<IDBRecord>());
-		IDBRecord detailRecord = detailSet.appendRow();
-		detailRecord.set("NAME", "产品3");
-		detailRecord.set("PRICE", 4);
-		detailRecord.set("WEIGHT", 200);
-		detailRecord.set("INTRODUCTION", "好吃3");
-		detailRecord = detailSet.appendRow();
-		detailRecord.set("NAME", "产品4");
-		detailRecord.set("PRICE", 3);
-		detailRecord.set("WEIGHT", 200);
-		detailRecord.set("INTRODUCTION", "好吃4");
-		detailRecord.setStatus(IDBRecord.DELETE);
-		detailRecord = detailSet.appendRow();
-		detailRecord.set("NAME", "产品5");
-		detailRecord.set("PRICE", 4);
-		detailRecord.set("WEIGHT", 200);
-		detailRecord.set("INTRODUCTION", "好吃5");
-		IDBBill bill = new DBBill(null, dao.getSetMealBill());
-		bill.setResultSet(0, headSet);
-		bill.setResultSet(1, detailSet);
-//		bill.setBillID("aaaa4F");
-		dao.addSetMeal(bill);
-		bill.setBillID(null);
-		dao.addSetMeal(bill);
-//		bill = dao.loadSetMeal(bill);
-		
-//		headRecord.set("MEALID", "aaaa4F");
-//		IDBBill success = dao.deleteSetMeal(bill);
-//		System.out.println(success);
-//		detailRecord.set("INTRODUCTION", "修改的值");
-//		dao.saveSetMeal();
-		IDBResultSet[] sets = bill.getResultSets();
-		System.out.println("size: "+sets.length+" INTRODUCTION ：  "+sets[0].getRecord(0).get("INTRODUCTION"));
 		
 	}
 

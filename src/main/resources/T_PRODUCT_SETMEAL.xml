@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Haiyan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../haiyan.xsd">
-	<table name="T_PRODUCT_SETMEAL_HEAD" description="套餐">
+	<table name="T_PRODUCT_SETMEAL" description="套餐">
 		<id name="ID" javaType="string" uiname="ID">
 			<component type="hidden" url="#"/>
 			<queryCondition type="equal"/>

@@ -1,6 +1,5 @@
 package com.shufan.product.common;
 
-import haiyan.bill.database.DBBill;
 import haiyan.cache.CacheUtil;
 import haiyan.cache.RedisStringDataCache;
 import haiyan.common.DebugUtil;
@@ -11,17 +10,14 @@ import haiyan.common.cache.AppDataCache;
 import haiyan.common.exception.Warning;
 import haiyan.common.intf.ILogger;
 import haiyan.common.intf.cache.IDataCache;
-import haiyan.common.intf.database.IDBBill;
 import haiyan.common.intf.database.orm.IDBRecord;
-import haiyan.common.intf.database.orm.IDBResultSet;
 import haiyan.config.util.ConfigUtil;
 import haiyan.exp.ExpUtil;
-import haiyan.orm.database.DBPage;
+import haiyan.orm.database.DBRecord;
 
 import java.io.File;
 import java.net.URL;
 import java.sql.Date;
-import java.util.ArrayList;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -103,10 +99,12 @@ public class ContextListener implements ServletContextListener {
 						int size = arr.length();
 						for(int i=0;i<size;i++){
 							JSONObject json = arr.getJSONObject(i);
+							String id = json.getString("id");
 							double price = json.getDouble("price");
 							double huodongPrice = json.getDouble("prefprice");
 							String name = json.getString("mealname");
 							long time = json.getJSONObject("dispatchingdate").getLong("time");
+							String picture = json.getString("picture");
 							Date date = new Date(time);
 							int day = date.getDay();
 							String week = null;
@@ -124,17 +122,16 @@ public class ContextListener implements ServletContextListener {
 								week = "周六";
 							else 
 								week = "周日";
-							IDBResultSet headSet = new DBPage(new ArrayList<IDBRecord>());
-							IDBRecord headRecord = headSet.appendRow();
-							headRecord.set("NAME", name);
-							headRecord.set("OLDPRICE", price);
-							headRecord.set("PRICE", huodongPrice);
-							headRecord.set("DATE", date);
-							headRecord.set("WEEK", week);
-							IDBBill bill = new DBBill(null, dao.getSetMealBill());
-							bill.setResultSet(0, headSet);
+							IDBRecord record = new DBRecord();
+							record.set("NAME", name);
+							record.set("OLDPRICE", price);
+							record.set("PRICE", huodongPrice);
+							record.set("DATE", date);
+							record.set("WEEK", week);
+							record.set("PICTURE", picture);
+							record.set("ID", id);
 							try {
-								dao.addSetMeal(bill);
+								dao.addMeal(record);
 							} catch (Throwable e) {
 								throw new Warning(500,e);
 							}
@@ -215,7 +212,7 @@ public class ContextListener implements ServletContextListener {
 		}
 		String[] configNames = new String[]{
 				"SYS.xml","SYSCACHE.xml","SYSORGA.xml","SYSROLE.xml","SYSOPERATOR.xml","SYSUSERROLE.xml"
-				,"T_PRODUCT_SETMEAL_HEAD.xml","T_PRODUCT_SETMEAL_DETAIL.xml","T_PRODUCT_SETMEAL_EVALUATE.xml","T_PRODUCT_PRODUCT.xml"};
+				,"T_PRODUCT_SETMEAL.xml","T_PRODUCT_SETMEAL_EVALUATE.xml","T_PRODUCT_PRODUCT.xml"};
 		for (String configName:configNames) {
 			URL url = ContextListener.class.getClassLoader().getResource(configName);
 			if (url==null)
@@ -225,16 +222,6 @@ public class ContextListener implements ServletContextListener {
 				throw new RuntimeException("file not found:"+file.getAbsolutePath());
 			}
 			ConfigUtil.loadTableConfig(file, true);
-		}
-		{//初始化Bill
-			URL url = ContextListener.class.getClassLoader().getResource("B_PRODUCT_SETMEAL.xml");
-			if (url==null)
-				throw new RuntimeException("config not found:"+"B_PRODUCT_SETMEAL.xml");
-			file = new File(url.getPath());
-			if (!file.exists()) {
-				throw new RuntimeException("file not found:"+file.getAbsolutePath());
-			}
-			ConfigUtil.loadBillConfig(file, true);
 		}
 	}
 

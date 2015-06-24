@@ -70,7 +70,8 @@
 
 .week_span{
 	text-align:left;
-	margin-bottom:5px;
+	margin-left: 5px;
+/* 	margin-bottom:5px; */
 }
 
 .plus_icon {
@@ -156,10 +157,11 @@
 					<ul class="gsrt-box">
 						#foreach($meal in $firstList)	
 						<li  class="combo" price="$meal.PRICE" Id="$meal.ID" mealId="$meal.MEALID">
-							<h1 class="week_span">$meal.WEEK</h1>
+<!-- 							<h1 class="week_span">$meal.WEEK</h1> -->
 							<img class="comboImg" alt="" src="$meal.PICTURE">
 							<div class="comboInfo">	
 								<h4 class="comboSet">$meal.NAME</h4>
+								<span class="week_span">$meal.WEEK</span>
 								<span class="meal_date" date="$meal.DATE">$meal.DATEFORMAT</span>
 							</div>				
 							<div class="the_choice">											
@@ -307,8 +309,8 @@ function xiadan(){
 		if(num > 0){
 			var meal = $meal.attr("Id");
 			var date = $meal.find(".meal_date").attr("date");
-			var name= $meal.find("span.comboSet").html();
-			var week=$meal.find(".ggsrt-time h1").html();
+			var name= $meal.find(".comboSet").html();
+			var week=$meal.find(".week_span").html();
 			var price=$meal.attr("price");
 			productids.push(meal);
 			arr[i] = {"ID":meal,"COUNT":num,"DISPATCHINGDATE":date,"week":week,"name":name,"price":price};

@@ -89,8 +89,8 @@ public class EvaluateController {
 	 * @param res
 	 * @return
 	 */
-	@RequestMapping(value = "evaluate/add", method = RequestMethod.POST)
-	public void addEvaluate(HttpServletRequest req, HttpServletResponse res){
+	@RequestMapping(value = "evaluate/add/{mealId}", method = RequestMethod.POST)
+	public void addEvaluate(HttpServletRequest req, HttpServletResponse res,@PathVariable("mealId")String mealId){
 		IWebContext context = null;
 		FileReader reader = null;
 		BufferedReader br = null;
@@ -101,8 +101,8 @@ public class EvaluateController {
 			VelocityContext ctx = new VelocityContext();
 			context = WebContextFactory.createDBContext(req, res);
 			ProductDao dao = new ProductDaoImpl(context);
-			IDBRecord record = new RequestRecord(req, res, dao.getSetMealEvaluateTable());
-			record = dao.addEvaluate(record);
+			IDBRecord record = new RequestRecord(req, res, dao.getMealEvaluateTable());
+			record = dao.addEvaluate(mealId,record);
 			if(record != null){
 				ctx.put("evaluate", record);
 			}

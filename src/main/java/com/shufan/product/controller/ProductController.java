@@ -56,7 +56,7 @@ public class ProductController {
 			Template pdTemplate = Velocity.getTemplate("allMealList.vm", "utf-8");
 			VelocityContext ctx = new VelocityContext();
 			ProductDao dao = new ProductDaoImpl(context);
-			IDBResultSet result = dao.getAllSetMeal(size, 1);
+			IDBResultSet result = dao.getAllMeal(size, 1);
 			if(result.getRecordCount()>0){
 				//TODO 此处需要数据库表中新加字段区分套餐一二
 				Collection<IDBRecord> collection = result.getRecords();
@@ -120,7 +120,7 @@ public class ProductController {
 				VelocityContext ctx = new VelocityContext();
 				context = new WebContext(req, res);
 				ProductDao dao = new ProductDaoImpl(context);
-				IDBResultSet result = dao.getAllSetMeal(size, page);
+				IDBResultSet result = dao.getAllMeal(size, page);
 				if(result.getRecordCount()>0){
 					ctx.put("list", result.getRecords());
 				}
@@ -130,58 +130,6 @@ public class ProductController {
 				bw.flush();
 				backData = sw.toString().replaceAll("\\n", "").replaceAll("\\t", "").replaceAll("\\r", "");
 				CacheUtil.setData("product", "meal_"+page, backData);
-			}
-			writer = res.getWriter();
-			if(callBack == null)
-				writer.write(backData);
-			else
-				writer.write(callBack+"("+backData+")");
-		}  catch (Exception e) {
-			throw new Warning(500, e);
-		}finally{
-			CloseUtil.close(br);
-			CloseUtil.close(reader);
-			CloseUtil.close(writer);
-			CloseUtil.close(context);
-		}
-	}
-	/**
-	 * 套餐明细页面
-	 * @param req
-	 * @param res
-	 * @param page
-	 */
-	@RequestMapping("/mealDetail/{mealId}/{page}")
-	public void mealDetail(HttpServletRequest req, HttpServletResponse res,@PathVariable("mealId")String mealId,@PathVariable("page")int page){
-		IContext context = null;
-		FileReader reader = null;
-		BufferedReader br = null;
-		PrintWriter writer = null;
-		try {
-			String backData = null;
-			String callBack = req.getParameter("jsonCallBack");
-			Object obj = CacheUtil.getData("product", "mealDetail_"+mealId);
-			if(obj != null){
-				backData = obj.toString();
-			}else{
-				int size = 20;
-				String pageSize = req.getParameter("pageSize");
-				if(pageSize != null)
-					size = Integer.parseInt(pageSize);
-				Template pdTemplate = Velocity.getTemplate("mealDetail.vm", "utf-8");
-				VelocityContext ctx = new VelocityContext();
-				context = new WebContext(req, res);
-				ProductDao dao = new ProductDaoImpl(context);
-				IDBResultSet result = dao.getSetMealDetail(mealId, size, page);
-				if(result.getRecordCount()>0){
-					ctx.put("list", result.getRecords());
-				}
-				StringWriter sw = new StringWriter();
-				BufferedWriter bw = new BufferedWriter(sw);
-				pdTemplate.merge(ctx, bw);
-				bw.flush();
-				backData = sw.toString().replaceAll("\\n", "").replaceAll("\\t", "").replaceAll("\\r", "");
-				CacheUtil.setData("product", "mealDetail_"+mealId, backData);
 			}
 			writer = res.getWriter();
 			if(callBack == null)
