@@ -6,8 +6,8 @@
 .ggsrt-time {
 	float: left;
 	background-color: rgb(232, 232, 232);
-	width: 50px;
-	height: 50px;
+	width: 70px;
+	height: 70px;
 }
 
 .ggsrt-time h1 {
@@ -29,14 +29,23 @@
 }
 
 .comboSet {
-	display: block;
-	float: left;
+	margin-top:20px;
 	margin-left: 20px;
-	line-height: 50px;
+}
+
+.comboInfo{
+	float:left;
+	height:70px;
+}
+
+.meal_date{
+	margin-left:20px;
+	float:left;
 }
 
 .the_choice {
-	height: 50px;
+	height: 70px;
+	
 /* 	width: 80px; */
 	float: right;
 /* 	margin-right: 20px; */
@@ -46,7 +55,7 @@
 	float: left;
 	width: 30px;
 	height: 30px;
-	margin-top: 10px;
+	margin-top: 20px;
 }
 
 .order_num {
@@ -55,17 +64,27 @@
 	float: left !important;
 	height: 30px;
 	width: 30px;
-	margin-top: 10px;
+	margin-top: 20px;
 	text-align: center;	
+}
+
+.week_span{
+	text-align:left;
+	margin-bottom:5px;
 }
 
 .plus_icon {
 	float: left;
 	width: 30px;
 	height: 30px;
-	margin-top: 10px;
+	margin-top: 20px;
 }
 
+.comboImg{
+	float:left;
+	height:70px;
+	width:70px;
+}
 
 .gsrt-box{
 	height: 300px;
@@ -137,12 +156,12 @@
 					<ul class="gsrt-box">
 						#foreach($meal in $firstList)	
 						<li  class="combo" price="$meal.PRICE" Id="$meal.ID" mealId="$meal.MEALID">
-							<div class="ggsrt-time">
-								<h1>$meal.WEEK</h1>
+							<h1 class="week_span">$meal.WEEK</h1>
+							<img class="comboImg" alt="" src="a.png">
+							<div class="comboInfo">	
+								<h4 class="comboSet">$meal.NAME</h4>
 								<span class="meal_date" date="$meal.DATE">$meal.DATEFORMAT</span>
-							</div>
-														
-							<span class="comboSet">$meal.NAME</span>
+							</div>				
 							<div class="the_choice">											
 									<button class="minus_icon btn btn-info btn-xs">-</button>
 									<input class="order_num" value="0">
