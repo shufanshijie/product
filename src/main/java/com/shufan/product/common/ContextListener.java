@@ -104,7 +104,9 @@ public class ContextListener implements ServletContextListener {
 							double huodongPrice = json.getDouble("prefprice");
 							String name = json.getString("mealname");
 							long time = json.getJSONObject("dispatchingdate").getLong("time");
-							String picture = json.getString("picture");
+							String picture = null;
+							if(json.has("picture"))
+								picture = json.getString("picture");
 							Date date = new Date(time);
 							int day = date.getDay();
 							String week = null;
@@ -128,7 +130,8 @@ public class ContextListener implements ServletContextListener {
 							record.set("PRICE", huodongPrice);
 							record.set("DATE", date);
 							record.set("WEEK", week);
-							record.set("PICTURE", picture);
+							if(picture != null)
+								record.set("PICTURE", picture);
 							record.set("ID", id);
 							try {
 								dao.addMeal(record);
