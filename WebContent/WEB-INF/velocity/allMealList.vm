@@ -31,6 +31,7 @@
 .comboSet {
 	margin-top:20px;
 	margin-left: 20px;
+	text-align:left;
 }
 
 .comboInfo{
@@ -88,7 +89,6 @@
 }
 
 .gsrt-box{
-	height: 300px;
 	overflow-x: hidden;
 	text-align: center;
 }
@@ -146,7 +146,7 @@
 	
 	<div class="ng-scope">
 		<div class="geo-rst-filter ng-scope">
-			<div class="grst-filter-toggle meat_type">
+			<div class="grst-filter-toggle meat_type" id="filter">
 				<ul class="nav nav-tabs nav-tabs-in-mealList">
 					<li class="active"><a href="#combo_1" data-toggle="tab">套餐一</a></li>
 						<li><a href="#combo_2" data-toggle="tab">套餐二</a></li>
@@ -320,5 +320,17 @@ function xiadan(){
 	$('.submitPageOff').find('input.userid').val(GetRequest().openID);
 	$('.submitPageOff').submit();
 }
+window.onresize=function(){
+	var height=document.body.clientHeight-($('header').height()+
+	$('footer').height()+
+	$('#filter').height()+70);
+	$('.gsrt-box').height(height);
+};
+$(document).ready(function(){
+	var height=document.body.clientHeight-($('header').height()+
+	$('footer').height()+
+	$('#filter').height()+70);
+	$('.gsrt-box').height(height);
+});
 </script>
 </body></html>
