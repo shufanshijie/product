@@ -29,61 +29,65 @@
 }
 
 .comboSet {
-	margin-top:20px;
-	margin-left: 20px;
 	text-align:left;
+	height:auto;
+	width:auto;
+	/*width:100%;*/
+	/*display:block;*/
+	white-space: normal !important;
+	
 }
 
 .comboInfo{
 	float:left;
-	height:70px;
+	padding-top:20px;
+	/*height:70px;*/
+	padding-left:90px;
+	padding-right:20px;
+	width:100%;
 }
 
 .meal_date{
-	margin-left:20px;
 	float:left;
 }
 
 .the_choice {
 	height: 70px;
-	
-/* 	width: 80px; */
-	float: right;
-/* 	margin-right: 20px; */
+	width:20px;
+	position: absolute;
+	right:0px;
 }
 
 .minus_icon {
 	float: left;
-	width: 30px;
-	height: 30px;
-	margin-top: 20px;
+	width: 20px;
+	height: 20px;
 }
 
 .order_num {
-	margin-left: 10px;
-	margin-right: 10px;
 	float: left !important;
-	height: 30px;
-	width: 30px;
-	margin-top: 20px;
+	margin-top: 5px;
+  margin-bottom: 5px;
+	height: 20px;
+	width: 20px;
 	text-align: center;	
 }
 
 .week_span{
 	text-align:left;
 	margin-left: 5px;
-/* 	margin-bottom:5px; */
+	float: left;
 }
 
 .plus_icon {
 	float: left;
-	width: 30px;
-	height: 30px;
-	margin-top: 20px;
+	width: 20px;
+	height: 20px;
 }
 
 .comboImg{
-	float:left;
+	position: absolute;
+	left:0px;
 	height:70px;
 	width:70px;
 }
@@ -157,38 +161,39 @@
 					<ul class="gsrt-box">
 						#foreach($meal in $firstList)	
 						<li  class="combo" price="$meal.PRICE" Id="$meal.ID" mealId="$meal.MEALID">
-<!-- 							<h1 class="week_span">$meal.WEEK</h1> -->
 							<img class="comboImg" alt="" src="$meal.PICTURE">
 							<div class="comboInfo">	
-								<h4 class="comboSet">$meal.NAME</h4>
-								<span class="week_span">$meal.WEEK</span>
+								<h4 class="comboSet">$meal.NAME</h4>								
 								<span class="meal_date" date="$meal.DATE">$meal.DATEFORMAT</span>
+								<span class="week_span">$meal.WEEK</span>
 							</div>				
 							<div class="the_choice">											
-									<button class="minus_icon btn btn-info btn-xs">-</button>
-									<input class="order_num" value="0">
 									<button class="plus_icon btn btn-info btn-xs">+</button>
+									<input class="order_num" value="0">
+									<button class="minus_icon btn btn-info btn-xs">-</button>									
 							</div>
 						</li>
 						#end
 					</ul>
 				</div>
 				<div class="tab-pane" id="combo_2">
-<!-- 					<div class="gsrt-box"> -->
-<!-- 						<div class="combo"> -->
-<!-- 							<div class="ggsrt-time"> -->
-<!-- 								<h1>周二</h1> -->
-<!-- 								<span>9.8</span> -->
-<!-- 							</div> -->
-														
-<!-- 							<span class="comboSet">菜包+茶叶蛋+豆浆</span> -->
-<!-- 							<div class="the_choice">											 -->
-<!-- 									<button class="minus_icon btn btn-info btn-xs">-</button> -->
-<!-- 									<input class="order_num" value="1"> -->
-<!-- 									<button class="plus_icon btn btn-info btn-xs">+</button> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
+					<ul class="gsrt-box">
+						#foreach($meal in $secondList)	
+						<li  class="combo" price="$meal.PRICE" Id="$meal.ID" mealId="$meal.MEALID">
+							<img class="comboImg" alt="" src="$meal.PICTURE">
+							<div class="comboInfo">	
+								<h4 class="comboSet">$meal.NAME</h4>								
+								<span class="meal_date" date="$meal.DATE">$meal.DATEFORMAT</span>
+								<span class="week_span">$meal.WEEK</span>
+							</div>				
+							<div class="the_choice">											
+									<button class="plus_icon btn btn-info btn-xs">+</button>
+									<input class="order_num" value="0">
+									<button class="minus_icon btn btn-info btn-xs">-</button>									
+							</div>
+						</li>
+						#end
+					</ul>
 				</div>
 			</div>
 		</div>
