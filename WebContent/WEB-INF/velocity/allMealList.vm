@@ -177,23 +177,6 @@
 					</ul>
 				</div>
 				<div class="tab-pane" id="combo_2">
-					<ul class="gsrt-box">
-						#foreach($meal in $secondList)	
-						<li  class="combo" price="$meal.PRICE" Id="$meal.ID" mealId="$meal.MEALID">
-							<img class="comboImg" alt="" src="$meal.PICTURE">
-							<div class="comboInfo">	
-								<h4 class="comboSet">$meal.NAME</h4>								
-								<span class="meal_date" date="$meal.DATE">$meal.DATEFORMAT</span>
-								<span class="week_span">$meal.WEEK</span>
-							</div>				
-							<div class="the_choice">											
-									<button class="plus_icon btn btn-info btn-xs">+</button>
-									<input class="order_num" value="0">
-									<button class="minus_icon btn btn-info btn-xs">-</button>									
-							</div>
-						</li>
-						#end
-					</ul>
 				</div>
 			</div>
 		</div>
@@ -337,5 +320,36 @@ $(document).ready(function(){
 	$('#filter').height()+70);
 	$('.gsrt-box').height(height);
 });
+var currentPage=1;
+$(function() {
+	$('.gsrt-box').scrollTop(100);
+	$('.gsrt-box')
+			.endlessScroll(
+					{
+						pagesToKeep : 80,
+						inflowPixels :10,				
+						ceaseFireOnEmpty:true,		
+						fireDelay : 1,
+						callback:function(i,p,d){
+						},
+						content : function(i, p, d) {
+							console.log(i, p, d);
+							var append="nodata";
+							if(d=='next'){
+								action('meal/'+(++currentPage),'get','html',function(result){
+									if(result.length>0)
+										append=result;
+								});
+							}else if(d=='prev'&&currentPage>1){
+								action('meal/'+(--currentPage),'get','html',function(result){
+									if(result.length>0)
+										append=result;
+								});
+							}				
+							return append;
+						}
+					});
+});
 </script>
-</body></html>
+</body>
+</html>
