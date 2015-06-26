@@ -1,14 +1,15 @@
-#foreach($meal in $firstList)
-						<div class="combo">
-							<div class="ggsrt-time">
-								<h1>$meal.WEEK</h1>
-								<span>$meal.DATEFORMAT</span>
-							</div>
-							<span class="comboSet">$meal.NAME</span>
+	#foreach($meal in $list)	
+						<li  class="combo" price="$meal.PRICE" Id="$meal.ID" mealId="$meal.MEALID">
+							<img class="comboImg" alt="" src="$meal.PICTURE">
+							<div class="comboInfo">	
+								<h4 class="comboSet">$meal.NAME</h4>								
+								<span class="meal_date" date="$meal.DATE">$meal.DATEFORMAT</span>
+								<span class="week_span">$meal.WEEK</span>
+							</div>				
 							<div class="the_choice">											
-									<button class="minus_icon btn btn-info btn-xs">-</button>
-									<input class="order_num" value="1">
 									<button class="plus_icon btn btn-info btn-xs">+</button>
+									<input class="order_num" value="0">
+									<button class="minus_icon btn btn-info btn-xs">-</button>									
 							</div>
-						</div>
-					#end		
+						</li>
+						#end
