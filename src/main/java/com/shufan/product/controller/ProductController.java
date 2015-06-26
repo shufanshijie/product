@@ -32,6 +32,7 @@ import com.shufan.product.dao.impl.ProductDaoImpl;
 @Controller
 public class ProductController {
 	private final int DEFAULTPAGESIZE=10;
+	private final boolean cachingEnabled=true;
 	/**
 	 * 套餐浏览主页面
 	 * @param req
@@ -44,11 +45,13 @@ public class ProductController {
 		BufferedReader br = null;
 		PrintWriter writer = null;
 		try {
-			Object obj = CacheUtil.getData("product", "meal_home");
-			if(obj != null){
-				res.getWriter().write(obj.toString());
-				return;
-			}
+			if(cachingEnabled){
+				Object obj = CacheUtil.getData("product", "meal_home");
+				if(obj != null){
+					res.getWriter().write(obj.toString());
+					return;
+				}
+			}			
 			context = new WebContext(req, res);
 			String pageSize=null;
 			int size=(pageSize= req.getParameter("pageSize"))==null?DEFAULTPAGESIZE:Integer.parseInt(pageSize);
@@ -108,7 +111,7 @@ public class ProductController {
 			String backData = null;
 			String callBack = req.getParameter("jsonCallBack");
 			Object obj = CacheUtil.getData("product", "meal_"+page);
-			if(obj != null){
+			if(cachingEnabled&&obj != null){
 				backData = obj.toString();
 			}else{
 				context = new WebContext(req, res);
@@ -168,7 +171,7 @@ public class ProductController {
 			String backData = null;
 			String callBack = req.getParameter("jsonCallBack");
 			Object obj = CacheUtil.getData("product", "productByType_"+type);
-			if(obj != null){
+			if(cachingEnabled&&obj != null){
 				backData = obj.toString();
 			}else{
 				int size = 100;
@@ -220,7 +223,7 @@ public class ProductController {
 			String backData = null;
 			String callBack = req.getParameter("jsonCallBack");
 			Object obj = CacheUtil.getData("product", "product_"+productId);
-			if(obj != null){
+			if(cachingEnabled&&obj != null){
 				backData = obj.toString();
 			}else{
 				Template pdTemplate = Velocity.getTemplate("product.vm", "utf-8");
