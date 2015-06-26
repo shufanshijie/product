@@ -31,6 +31,7 @@ import com.shufan.product.dao.impl.ProductDaoImpl;
 
 @Controller
 public class ProductController {
+	private final int DEFAULTPAGESIZE=10;
 	/**
 	 * 套餐浏览主页面
 	 * @param req
@@ -43,16 +44,14 @@ public class ProductController {
 		BufferedReader br = null;
 		PrintWriter writer = null;
 		try {
-//			Object obj = CacheUtil.getData("product", "meal_home");
-//			if(obj != null){
-//				res.getWriter().write(obj.toString());
-//				return;
-//			}
+			Object obj = CacheUtil.getData("product", "meal_home");
+			if(obj != null){
+				res.getWriter().write(obj.toString());
+				return;
+			}
 			context = new WebContext(req, res);
-			int size = 20;
-			String pageSize = req.getParameter("pageSize");
-			if(pageSize != null)
-				size = Integer.parseInt(pageSize);
+			String pageSize=null;
+			int size=(pageSize= req.getParameter("pageSize"))==null?DEFAULTPAGESIZE:Integer.parseInt(pageSize);
 			Template pdTemplate = Velocity.getTemplate("allMealList.vm", "utf-8");
 			VelocityContext ctx = new VelocityContext();
 			ProductDao dao = new ProductDaoImpl(context);
@@ -78,7 +77,7 @@ public class ProductController {
 			bw.flush();
 			String backData = sw.toString().replaceAll("\\n", "").replaceAll("\\t", "").replaceAll("\\r", "");
 			writer.write(backData);
-//			CacheUtil.setData("product", "meal_home", backData);
+			CacheUtil.setData("product", "meal_home", backData);
 			
 		}  catch (Exception e) {
 			throw new Warning(500, e);
@@ -102,26 +101,34 @@ public class ProductController {
 		BufferedReader br = null;
 		PrintWriter writer = null;
 		try {
-			if(page == 1){//浏览首页
-				mealHome(req,res);
-				return;
-			}
+//			if(page == 1){//浏览首页
+//				mealHome(req,res);
+//				return;
+//			}
 			String backData = null;
 			String callBack = req.getParameter("jsonCallBack");
 			Object obj = CacheUtil.getData("product", "meal_"+page);
 			if(obj != null){
 				backData = obj.toString();
 			}else{
-				int size = 20;
-				String pageSize = req.getParameter("pageSize");
-				if(pageSize != null)
-					size = Integer.parseInt(pageSize);
+				context = new WebContext(req, res);
+				String pageSize=null;
+				int size=(pageSize= req.getParameter("pageSize"))==null?DEFAULTPAGESIZE:Integer.parseInt(pageSize);
 				Template pdTemplate = Velocity.getTemplate("mealList.vm", "utf-8");
 				VelocityContext ctx = new VelocityContext();
-				context = new WebContext(req, res);
 				ProductDao dao = new ProductDaoImpl(context);
 				IDBResultSet result = dao.getAllMeal(size, page);
 				if(result.getRecordCount()>0){
+					//TODO 此处需要数据库表中新加字段区分套餐一二
+					Collection<IDBRecord> collection = result.getRecords();
+					Iterator<IDBRecord> it = collection.iterator();
+					while(it.hasNext()){
+						//格式化一下日期
+						IDBRecord record = (IDBRecord) it.next();
+						String date = (String)record.get("DATE");
+						String dateFormat = date.substring(date.indexOf("-")+1);
+						record.set("DATEFORMAT", dateFormat);
+					}
 					ctx.put("list", result.getRecords());
 				}
 				StringWriter sw = new StringWriter();
@@ -129,7 +136,7 @@ public class ProductController {
 				pdTemplate.merge(ctx, bw);
 				bw.flush();
 				backData = sw.toString().replaceAll("\\n", "").replaceAll("\\t", "").replaceAll("\\r", "");
-				CacheUtil.setData("product", "meal_"+page, backData);
+				CacheUtil.setData("product","meal_"+page,backData);
 			}
 			writer = res.getWriter();
 			if(callBack == null)
